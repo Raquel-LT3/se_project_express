@@ -24,4 +24,4 @@ This project is the back-end portion of the "What to Wear?" application. It prov
 `npm run lint` — to run the linter and check for style errors
 
 ## Screenshots
-![Terminal Screenshot](./terminal_status.png)
+![Terminal Screenshot](./images/terminal_status.png)
