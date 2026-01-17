@@ -23,6 +23,7 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
-    'no-underscore-dangle': ['error', { allow: ['_id'] }], // The exception for MongoDB _id
+    "no-console": ["warn", { allow: ["error"] }], // Warn on log, allow error
+    "no-underscore-dangle": ["error", { allow: ["_id"] }],
   },
 };
