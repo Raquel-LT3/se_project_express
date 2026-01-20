@@ -1,5 +1,4 @@
 // routes/clothingItems.js
-
 const router = require("express").Router();
 const { 
   getItems, 
@@ -9,6 +8,7 @@ const {
   dislikeItem 
 } = require("../controllers/clothingItems");
 
+// Only define the specific actions here
 router.get("/", getItems);
 router.post("/", createItem);
 router.delete("/:itemId", deleteItem);
