@@ -28,35 +28,42 @@ const login = (req, res) => {
       res.status(SUCCESS_CODE).send({ token });
     })
     .catch((err) => {
-      // Use UNAUTHORIZED_ERROR instead of 401
-      res.status(UNAUTHORIZED_ERROR).send({ message: err.message });
+      // Specifically check for our custom error message
+      if (err.message === "Incorrect email or password") {
+        return res.status(UNAUTHORIZED_ERROR).send({ message: err.message });
+      }
+      // Everything else is a server error
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error has occurred on the server" });
     });
 };
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  bcrypt.hash(password, 10)
-    .then((hashedPassword) => {
+  // Validate presence of email and password first
+  if (!email || !password) {
+    return res.status(BAD_REQUEST_ERROR).send({ message: "Email and password are required" });
+  }
+
+  return bcrypt.hash(password, 10)
+    .then((hashedPassword) => 
       User.create({ name, avatar, email, password: hashedPassword })
-        .then((user) => {
-          const userObject = user.toObject();
-          delete userObject.password;
-          res.status(CREATED_CODE).send(userObject);
-        })
-        .catch((err) => {
-          if (err.code === 11000) {
-            // Use CONFLICT_ERROR instead of 409
-            return res.status(CONFLICT_ERROR).send({ message: "User with this email already exists" });
-          }
-          if (err.name === "ValidationError") {
-            return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
-          }
-          return res.status(INTERNAL_SERVER_ERROR).send({ message: "Server error" });
-        });
+    )
+    .then((user) => {
+      const userObject = user.toObject();
+      delete userObject.password;
+      res.status(CREATED_CODE).send(userObject);
+    })
+    .catch((err) => {
+      if (err.code === 11000) {
+        return res.status(CONFLICT_ERROR).send({ message: "User with this email already exists" });
+      }
+      if (err.name === "ValidationError") {
+        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
+      }
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error has occurred on the server" });
     });
 };
-
 
 const getCurrentUser = (req, res) => {
   const { _id } = req.user; // From Auth Middleware

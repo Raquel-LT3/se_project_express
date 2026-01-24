@@ -4,17 +4,18 @@ const userRouter = require("./users");
 const itemRouter = require("./clothingItems");
 const { login, createUser } = require("../controllers/users");
 const auth = require("../middlewares/auth");
+const { getItems } = require("../controllers/clothingItems"); // Import the specific controller
 
 // 1. PUBLIC ROUTES
 router.post("/signup", createUser);
 router.post("/signin", login);
-router.get("/items", itemRouter); // This allows GET /items without a token
+router.get("/items", getItems); // Call the controller function directly here
 
 // 2. PROTECT EVERYTHING BELOW
 router.use(auth); 
 
 // 3. PROTECTED ROUTES
-router.use("/users", userRouter); // Handles /users/me
-router.use("/items", itemRouter); // Handles POST, DELETE, etc. for /items
+router.use("/users", userRouter); 
+router.use("/items", itemRouter); // This handles POST and DELETE /items
 
 module.exports = router;
