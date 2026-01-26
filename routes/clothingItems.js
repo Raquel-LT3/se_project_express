@@ -1,15 +1,13 @@
 // routes/clothingItems.js
 const router = require("express").Router();
 const { 
-  getItems, 
   createItem, 
   deleteItem, 
   likeItem, 
   dislikeItem 
 } = require("../controllers/clothingItems");
 
-// Only define the specific actions here
-router.get("/", getItems);
+// Route definitions for clothing items
 router.post("/", createItem);
 router.delete("/:itemId", deleteItem);
 router.put("/:itemId/likes", likeItem);

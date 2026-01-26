@@ -47,17 +47,18 @@ const deleteItem = (req, res) => {
         return res.status(FORBIDDEN_ERROR).send({ message: "You do not have permission to delete this item" });
       }
 
-      return ClothingItem.findByIdAndRemove(itemId)
+     return ClothingItem.findByIdAndDelete(itemId)
         .then((deletedItem) => res.status(SUCCESS_CODE).send(deletedItem));
     })
     .catch((err) => {
+      console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND_ERROR).send({ message: "Item not found" });
       }
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid item ID" });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: "Server error" });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: "An error has occurred on the server" });
     });
 };
 const likeItem = (req, res) => {
