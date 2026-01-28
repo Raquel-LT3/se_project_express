@@ -12,10 +12,10 @@ router.post("/signin", login);
 router.get("/items", getItems); // Call the controller function directly here
 
 // 2. PROTECT EVERYTHING BELOW
-router.use(auth); 
+router.use(auth);
 
 // 3. PROTECTED ROUTES
-router.use("/users", userRouter); 
+router.use("/users", userRouter);
 router.use("/items", itemRouter); // This handles POST and DELETE /items
 
 module.exports = router;

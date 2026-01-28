@@ -1,10 +1,10 @@
 // routes/clothingItems.js
 const router = require("express").Router();
-const { 
-  createItem, 
-  deleteItem, 
-  likeItem, 
-  dislikeItem 
+const {
+  createItem,
+  deleteItem,
+  likeItem,
+  dislikeItem,
 } = require("../controllers/clothingItems");
 
 // Route definitions for clothing items
