@@ -49,7 +49,7 @@ const createUser = (req, res) => {
   return bcrypt
     .hash(password, 10)
     .then((hashedPassword) =>
-      User.create({ name, avatar, email, password: hashedPassword })
+      User.create({ name, avatar, email, password: hashedPassword }),
     )
     .then((user) => {
       const userObject = user.toObject();
@@ -95,7 +95,7 @@ const updateProfile = (req, res) => {
   User.findByIdAndUpdate(
     _id,
     { name, avatar },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .then((user) => {
       if (!user) {

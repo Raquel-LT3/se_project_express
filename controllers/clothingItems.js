@@ -54,7 +54,7 @@ const deleteItem = (req, res) => {
       }
 
       return ClothingItem.findByIdAndDelete(itemId).then((deletedItem) =>
-        res.status(SUCCESS_CODE).send(deletedItem)
+        res.status(SUCCESS_CODE).send(deletedItem),
       );
     })
     .catch((err) => {
@@ -76,7 +76,7 @@ const likeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
     .orFail()
     .then((item) => res.status(SUCCESS_CODE).send(item))
@@ -102,7 +102,7 @@ const dislikeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
     .orFail()
     .then((item) => res.status(SUCCESS_CODE).send(item))
