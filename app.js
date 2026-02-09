@@ -12,11 +12,11 @@ const UnauthorizedError = require('./errors/unauthorized-err');
 const routes = require("./routes");
 
 const app = express();
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, MONGODB_URI } = process.env; // Get MONGODB_URI from .env
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => console.log("Connected to MongoDB"))
+  .connect(MONGODB_URI || "mongodb://127.0.0.1:27017/wtwr_db") // Use Cloud if available, otherwise local
+  .then(() => console.log("Connected to MongoDB (Cloud)"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 // Middlewares 
