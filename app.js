@@ -1,12 +1,14 @@
 // app.js
 
+require('dotenv').config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { errors } = require("celebrate"); 
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const NotFoundError = require("./errors/not-found-err");
-const UnauthorizedError = require('../errors/unauthorized-err');
+const UnauthorizedError = require('./errors/unauthorized-err');
 const routes = require("./routes");
 
 const app = express();
