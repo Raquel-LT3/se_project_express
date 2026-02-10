@@ -35,4 +35,4 @@ Check out [this video]( ), where I describe my project, the technologies used, a
 - **Environment Security**: Production secrets (JWT, Mongo URI) are securely managed via `.env` variables.
 
 ## 🔗 Frontend Repository
-[https://github.com/ro29graphics/se_project_react](https://github.com/ro29graphics/se_project_react)
+[https://github.com/Raquel-LT3/se_project_react](https://github.com/Raquel-LT3/se_project_react)
