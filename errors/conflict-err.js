@@ -1,4 +1,4 @@
-//errors/conflict-err.js
+// errors/conflict-err.js
 
 class ConflictError extends Error {
   constructor(message) {

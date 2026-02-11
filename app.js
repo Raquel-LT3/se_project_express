@@ -7,53 +7,43 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { errors } = require("celebrate"); 
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const NotFoundError = require("./errors/not-found-err");
-const UnauthorizedError = require('./errors/unauthorized-err');
+const errorHandler = require("./middlewares/error-handler");
 const routes = require("./routes");
+const NotFoundError = require("./errors/not-found-err");
 
 const app = express();
-const { PORT = 3001, MONGODB_URI } = process.env; // Get MONGODB_URI from .env
+const { PORT = 3001, MONGODB_URI } = process.env;
 
 mongoose
-  .connect(MONGODB_URI || "mongodb://127.0.0.1:27017/wtwr_db") // Use Cloud if available, otherwise local
-  .then(() => console.log("Connected to MongoDB (Cloud)"))
+  .connect(MONGODB_URI || "mongodb://127.0.0.1:27017/wtwr_db")
+  .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
-// Middlewares 
+// 1. Pre-route Middlewares
 app.use(cors());
 app.use(express.json());
-
-// Logging middleware 
 app.use(requestLogger);
 
-// Routes
+// 2. Crash Test (must be before routes and auth)
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
+// 3. Main Routes
 app.use(routes);
 
-// 404 Not Found handler
+// 4. 404 Handler (Runs if no routes above match)
 app.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
-// Error logging middleware
-app.use(errorLogger);
 
-// Celebrate error handler - catches Joi validation errors
-app.use(errors());
-
-// Centralized error handler
-app.use((err, req, res, next) => {
-  console.error(err); // Rule: Always log errors
-  
-  // Rule: If the error has no status, return 500
-  const { statusCode = 500, message } = err;
-  
-  res.status(statusCode).send({
-    message: statusCode === 500 
-      ? "An error occurred on the server" 
-      : message,
-  });
-});
+// 5. Error Handling
+app.use(errorLogger); // Logs the error first
+app.use(errors());      // Celebrate/Joi validation errors
+app.use(errorHandler); // Centralized custom error handler
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
 });
-

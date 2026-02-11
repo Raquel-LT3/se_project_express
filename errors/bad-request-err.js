@@ -1,4 +1,4 @@
-//errors/bad-request-err.js
+// errors/bad-request-err.js
 
 class BadRequestError extends Error {
   constructor(message) {
