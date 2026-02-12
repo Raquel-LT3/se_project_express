@@ -59,6 +59,7 @@ const deleteItem = (req, res, next) => {
 
 // 4. Like an item
 const likeItem = (req, res, next) => {
+  // Use "ClothingItem" instead of "Item"
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
@@ -79,6 +80,7 @@ const likeItem = (req, res, next) => {
 
 // 5. Dislike an item
 const dislikeItem = (req, res, next) => {
+  // Use "ClothingItem" instead of "Item"
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
@@ -97,6 +99,7 @@ const dislikeItem = (req, res, next) => {
     });
 };
 
+// Make sure both are in your module.exports at the bottom
 module.exports = {
   getItems,
   createItem,
