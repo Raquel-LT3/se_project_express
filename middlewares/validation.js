@@ -11,7 +11,7 @@ const validateURL = (value, helpers) => {
 };
 
 // 1. User Profile Update Validation
-module.exports.validateUserUpdate = celebrate({
+const validateUserUpdate = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
       "string.min": 'The minimum length of the "name" field is 2',
@@ -24,7 +24,7 @@ module.exports.validateUserUpdate = celebrate({
 });
 
 // 2. User Creation (Signup) Validation
-module.exports.validateUserBody = celebrate({
+const validateUserBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).messages({
       "string.min": 'The minimum length of the "name" field is 2',
@@ -43,7 +43,7 @@ module.exports.validateUserBody = celebrate({
 });
 
 // 3. Authentication (Login) Validation
-module.exports.validateAuthentication = celebrate({
+const validateAuthentication = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email().messages({
       "string.email": 'The "email" field must be a valid email',
@@ -55,7 +55,7 @@ module.exports.validateAuthentication = celebrate({
 });
 
 // 4. ID Validation (Hex length 24)
-module.exports.validateId = celebrate({
+const validateId = celebrate({
   params: Joi.object().keys({
     itemId: Joi.string().hex().length(24).messages({
       "string.hex": "The id must be a hexadecimal value",
@@ -63,3 +63,25 @@ module.exports.validateId = celebrate({
     }),
   }),
 });
+
+const validateCardBody = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+      "string.empty": 'The "name" field must be filled in',
+    }),
+    imageUrl: Joi.string().required().custom(validateURL).messages({
+      "string.empty": 'The "imageUrl" field must be filled in',
+      "string.uri": 'the "imageUrl" field must be a valid url',
+    }),
+  }),
+});
+
+module.exports = {
+  validateUserUpdate,
+  validateUserBody,
+  validateAuthentication,
+  validateId,
+  validateCardBody,
+};

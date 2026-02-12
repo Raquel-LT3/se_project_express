@@ -16,8 +16,14 @@ const { PORT = 3001, MONGODB_URI } = process.env;
 
 mongoose
   .connect(MONGODB_URI || "mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Error connecting to MongoDB:", err));
+  .then(() => {
+    // eslint-disable-next-line no-console
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error("Error connecting to MongoDB:", err);
+  });
 
 // 1. Pre-route Middlewares
 app.use(cors());
@@ -45,5 +51,6 @@ app.use(errors());      // Celebrate/Joi validation errors
 app.use(errorHandler); // Centralized custom error handler
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`App listening at port ${PORT}`);
 });
