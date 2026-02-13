@@ -3,11 +3,16 @@
 const router = require("express").Router();
 const auth = require("../middlewares/auth"); // 1. Import auth
 const {
+  getItems,
   createItem,
   deleteItem,
   likeItem,
   dislikeItem,
 } = require("../controllers/clothingItems");
+
+// Public route
+router.get("/", getItems);
+
 const { validateCardBody, validateId } = require("../middlewares/validation");
 
 // 2. Add 'auth' before the validator
